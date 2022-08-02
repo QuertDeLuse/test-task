@@ -34,16 +34,13 @@
 
 <script>
 export default {
-    props: {
-        activeGroupId: {
-            type: Number,
-            default: () => 0,
-        },
-    },
     data() {
         return {}
     },
     computed: {
+        activeGroupId() {
+            return this.$store.getters["activeGroupId"]
+        },
         groups() {
             return this.$store.getters["groups"]
         },

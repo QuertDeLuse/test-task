@@ -3,6 +3,7 @@
 export const state = () => ({
     products: [],
     groups: [],
+    activeGroupId: 0,
 
     usdRate: 60,
     isGrow: undefined,
@@ -14,7 +15,14 @@ export const state = () => ({
 
 export const getters = {
     products: state => state.products,
+    productsWithGroup: state => {
+        const productsTmp = state.products
+
+        if (state.activeGroupId === 0) return productsTmp
+        return productsTmp.filter(item => item.group.id === state.activeGroupId)
+    },
     groups: state => state.groups,
+    activeGroupId: state => state.activeGroupId,
 
     usdRate: state => state.usdRate,
     isGrow: state => state.isGrow,
@@ -25,39 +33,35 @@ export const getters = {
 }
 
 export const mutations = {
-    SET_PRODUCTS(state, paylaod) {
-        state.products = paylaod
+    SET_PRODUCTS(state, payload) {
+        state.products = payload
     },
-    SET_GROUPS(state, paylaod) {
-        state.groups = paylaod
+    SET_GROUPS(state, payload) {
+        state.groups = payload
+    },
+    SET_ACTIVE_GROUP_ID(state, payload) {
+        state.activeGroupId = payload
     },
 
     SET_USD_RATE(state, payload) {
         state.usdRate = payload
     },
-    SET_IS_GROW(state, paylaod) {
-        state.isGrow = paylaod
+    SET_IS_GROW(state, payload) {
+        state.isGrow = payload
     },
 
-    SET_CART_ITEMS(state, paylaod) {
-        state.cartItems = paylaod
+    SET_CART_ITEMS(state, payload) {
+        state.cartItems = payload
     },
-    SET_CART_PRODUCTS(state, paylaod) {
-        state.cartProducts = paylaod
+    SET_CART_PRODUCTS(state, payload) {
+        state.cartProducts = payload
     },
-    SET_CART_ALL_COST(state, paylaod) {
-        state.cartAllCost = paylaod
+    SET_CART_ALL_COST(state, payload) {
+        state.cartAllCost = payload
     },
 }
 
 export const actions = {
-    setUsdRate({ commit }, newUsdRate) {
-        commit("SET_USD_RATE", newUsdRate)
-    },
-    setIsGrow({ commit }, newValue) {
-        commit("SET_IS_GROW", newValue)
-    },
-
     getDataFromJson({ commit, getters }) {
         const data = require(`~/assets/data/data.json`)
         const names = require(`~/assets/data/names.json`)
@@ -109,6 +113,27 @@ export const actions = {
 
         commit("SET_GROUPS", groups)
         commit("SET_PRODUCTS", productsTransformed)
+    },
+
+    setActiveGroup({ commit }, newActiveGroupId) {
+        commit("SET_ACTIVE_GROUP_ID", newActiveGroupId)
+    },
+
+    setUsdRate({ commit }, newUsdRate) {
+        commit("SET_USD_RATE", newUsdRate)
+    },
+    newUsdRate({ commit, getters }) {
+        const max = 80
+        const min = 20
+        const newUsdRate = Math.random() * (max - min) + min
+
+        let isGrow = undefined
+
+        if (newUsdRate > getters.usdRate) isGrow = true
+        if (newUsdRate < getters.usdRate) isGrow = false
+
+        commit("SET_USD_RATE", Number(newUsdRate).toFixed(0))
+        commit("SET_IS_GROW", isGrow)
     },
 
     addToCartItems({ commit, getters }, itemId) {

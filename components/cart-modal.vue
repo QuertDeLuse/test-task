@@ -40,7 +40,10 @@
                                 </span>
                                 <span
                                     class="numerals"
-                                    :class="{ 'red-numbers': !isGrow, 'green-numbers': isGrow }"
+                                    :class="{
+                                        'red-numbers': isGrow === true,
+                                        'green-numbers': isGrow === false,
+                                    }"
                                 >
                                     {{ Number(product.priceRub).toFixed(2) | currency }} / шт.
                                 </span>
@@ -59,7 +62,10 @@
                             Общая стоимость:
                             <span
                                 class="cart__result__cost"
-                                :class="{ 'red-numbers': !isGrow, 'green-numbers': isGrow }"
+                                :class="{
+                                    'red-numbers': isGrow === true,
+                                    'green-numbers': isGrow === false,
+                                }"
                             >
                                 {{ Number(cartAllCost).toFixed(2) | currency }}
                             </span>

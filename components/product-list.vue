@@ -6,7 +6,7 @@
                 <div class="item__qty">{{ product.qty | qty }}</div>
                 <div
                     class="item__price"
-                    :class="{ 'red-numbers': !isGrow, 'green-numbers': isGrow }"
+                    :class="{ 'red-numbers': isGrow === true, 'green-numbers': isGrow === false }"
                 >
                     {{ Number(product.priceRub).toFixed(2) | currency }}
                 </div>
