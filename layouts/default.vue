@@ -15,7 +15,7 @@ export default {
         },
     },
     created() {
-        const seconds = 5
+        const seconds = 15
 
         setInterval(() => {
             this.$store.dispatch("newUsdRate")
